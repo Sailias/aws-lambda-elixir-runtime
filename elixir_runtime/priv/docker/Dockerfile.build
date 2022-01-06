@@ -8,6 +8,7 @@ RUN apt-get update && \
     mkdir /workspace
 
 RUN mix local.hex --force && \
+    mix local.rebar --forece && \
     mix hex.info
 
 WORKDIR /workspace
