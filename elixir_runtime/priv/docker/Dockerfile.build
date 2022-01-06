@@ -3,20 +3,28 @@ FROM elixir:1.9.1
 RUN apt-get update && \
     apt-get install -y \
       zip \
+      openssl \
+      build-essential \
+      libc6-dev \
+      zlib1g-dev \
+      libssl-dev \
     && \
     rm -rf /var/lib/apt/lists/* && \
     mkdir /workspace
 
+RUN whereis libtinfo
+RUN whereis libcrypto
+RUN cat /etc/os-release
+
 RUN mix local.hex --force && \
-    mix local.rebar --forece && \
+    mix local.rebar --force && \
     mix hex.info
 
 WORKDIR /workspace
 
 COPY . .
 
-ARG MIX_ENV=prod
-ENV MIX_ENV=${MIX_ENV}
+ENV MIX_ENV=prod
 
 RUN mix do \
     deps.get, \
